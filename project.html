@@ -1,112 +1,393 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JENZ</title>
+    <title>JENZ - Portofolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent-cyan: #06b6d4;
+            --accent-cyan-light: #22d3ee;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
         }
         body {
-            font-family: Arial, sans-serif;
-            background-color: white;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
         }
         nav {
-            background-color: aqua;
-            padding: 12px 5%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
         }
         nav h2 {
             font-size: 20px;
-            color: black;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+        nav h2 span {
+            color: var(--accent-cyan);
         }
         nav ul {
             display: flex;
             list-style: none;
-            gap: 25px;
+            gap: 30px;
         }
         nav ul li a {
             text-decoration: none;
-            color: black;
-            font-size: 12px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
-        .projek {
-            text-align: center;
-            padding: 35px 20px;
+        nav ul li a:hover {
+            color: var(--accent-cyan-light);
+            text-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
         }
-        .projek h2 {
-            font-size: 20px;
-            margin-bottom: 25px;
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            flex-wrap: wrap;
-        }
-        .card {
-            background-color: aqua;
-            width: 95px;
-            height: 125px;
+        .hero {
+            position: relative;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-size: 12px;
+            padding: 100px 20px 40px;
+            overflow: hidden;
+            background: #000;
+        }
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            transition: object-fit 0.4s ease;
+        }
+        .hero-video.cover-mode {
+            object-fit: cover;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(15,23,42,0.6) 0%, rgba(15,23,42,0.85) 100%);
+            z-index: 2;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+            max-width: 800px;
+        }
+        .hero-img-wrapper {
+            position: relative;
+        }
+        .hero-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-cyan);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+        }
+        .hero-text h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .hero-text p {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .video-controls {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            z-index: 4;
+            display: flex;
+            gap: 10px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 4px 8px;
+            border-radius: 15px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .control-btn:hover {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--accent-cyan-light);
+        }
+        .projek {
+            padding: 80px 8%;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+            background: var(--bg-color);
+        }
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--accent-cyan);
+            border-radius: 2px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            justify-content: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.3);
+        }
+        .card-img-wrapper {
+            width: 100%;
+            height: 160px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .card:hover img {
+            transform: scale(1.05);
+        }
+        .card h4 {
+            font-size: 18px;
+            color: #fff;
+            font-weight: 600;
         }
         .card p {
-            font-size: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
         }
-        media (max-width: 480px) {
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        @media (max-width: 768px) {
             nav {
-                padding: 12px 15px;
-            }
-            nav h2 {
-                font-size: 17px;
+                padding: 14px 5%;
             }
             nav ul {
-                gap: 12px;
+                gap: 15px;
             }
             nav ul li a {
-                font-size: 10px;
+                font-size: 12px;
             }
-            .container {
-                gap: 20px;
+            .hero-text h1 {
+                font-size: 24px;
             }
-            .card {
-                width: 90px;
-                height: 120px;
+            .hero-text p {
+                font-size: 14px;
+            }
+            .hero-img {
+                width: 100px;
+                height: 100px;
+            }
+            .video-controls {
+                bottom: 15px;
+                right: 15px;
+                font-size: 11px;
             }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <h2>Portofolio</h2>
+    <nav id="home">
+        <div class="brand">
+            <img src="JENZ.jpg" alt="Logo" class="nav-logo" onerror="this.src='https://via.placeholder.com/40/06b6d4/ffffff?text=J'">
+            <h2>JENZ <span>Portofolio</span></h2>
+        </div>
         <ul>
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#project">Project</a></li>
         </ul>
     </nav>
+    <section class="hero" id="about">
+        <div class="video-container">
+            <video id="bgVideo" autoplay muted loop playsinline class="hero-video">
+                <source src="video.mp4" type="video/mp4">
+                Maaf, browser Anda tidak mendukung pemutaran video.
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-img-wrapper">
+                <img src="JE.jpg" alt="Profil JENZ" class="hero-img" onerror="this.src='https://via.placeholder.com/130/06b6d4/ffffff?text=JENZ'">
+            </div>
+            <div class="hero-text">
+                <h1>Assalamualaikum, Abi JENZ</h1>
+                <p>Selamat datang di web portofolio JENJUT</p>
+            </div>
+        </div>
+        <div class="video-controls">
+            <button class="control-btn" id="toggleFitBtn" title="Ubah mode tampilan video">
+                <i class="fa-solid fa-expand"></i> <span id="fitText">Utuh (Contain)</span>
+            </button>
+            <button class="control-btn" id="toggleSoundBtn" title="Suara Video">
+                <i class="fa-solid fa-volume-xmark" id="soundIcon"></i>
+            </button>
+        </div>
+    </section>
     <section class="projek" id="project">
-        <h2>Project</h2>
+        <h2 class="section-title">Foto my Girlfriend</h2>
         <div class="container">
             <div class="card">
-                <h4>Project</h4>
-                <p>JENZ 1</p>
+                <div class="card-img-wrapper">
+                    <img src="a.jpg" alt="JENZ 1" onerror="this.src='https://via.placeholder.com/300x200/1e293b/06b6d4?text=Project+1'">
+                </div>
+                <h4>JENZ Project 1</h4>
+                <p>She is very cute</p>
             </div>
             <div class="card">
-                <h4>Project</h4>
-                <p>JENZ 2</p>
+                <div class="card-img-wrapper">
+                    <img src="b.jpg" alt="JENZ 2" onerror="this.src='https://via.placeholder.com/300x200/1e293b/06b6d4?text=Project+2'">
+                </div>
+                <h4>JENZ Project 2</h4>
+                <p>And so beautiful</p>
             </div>
             <div class="card">
-                <h4>Project</h4>
-                <p>JENZ 3</p>
+                <div class="card-img-wrapper">
+                    <img src="Caca.jpg" alt="JENZ 3" onerror="this.src='https://via.placeholder.com/300x200/1e293b/06b6d4?text=Project+3'">
+                </div>
+                <h4>JENZ Project 3</h4>
+                <p>He is also very diligent in his studies</p>
             </div>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2026 JENZ Portofolio</p>
+    </footer>
+    <script>
+        const video = document.getElementById('bgVideo');
+        const toggleFitBtn = document.getElementById('toggleFitBtn');
+        const fitText = document.getElementById('fitText');
+        const toggleSoundBtn = document.getElementById('toggleSoundBtn');
+        const soundIcon = document.getElementById('soundIcon');
+        let isCoverMode = false;
+        toggleFitBtn.addEventListener('click', () => {
+            isCoverMode = !isCoverMode;
+            if (isCoverMode) {
+                video.classList.add('cover-mode');
+                fitText.textContent = "Penuh (Cover)";
+            } else {
+                video.classList.remove('cover-mode');
+                fitText.textContent = "Utuh (Contain)";
+            }
+        });
+        toggleSoundBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            if (video.muted) {
+                soundIcon.className = "fa-solid fa-volume-xmark";
+            } else {
+                soundIcon.className = "fa-solid fa-volume-high";
+            }
+        });
+    </script>
+</body>
+</html>
